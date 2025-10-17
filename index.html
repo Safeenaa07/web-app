@@ -96,18 +96,48 @@
         <input type="text" id="sellerName" placeholder="Your Name" />
         <button onclick="addListing()">Post Product</button>
       </div>
+
       <div class="listings-section">
         <h2>Available Products</h2>
         <div id="listings"></div>
       </div>
     </div>
+
     <script>
-      let products = [];
+      // Predefined products
+      let products = [
+        {
+          name: "Used Laptop",
+          desc: "Dell Inspiron i5, 8GB RAM, 512GB SSD, good condition.",
+          price: 28000,
+          seller: "Ravi Kumar",
+        },
+        {
+          name: "Mountain Bicycle",
+          desc: "Hero Sprint mountain bike, barely used.",
+          price: 7500,
+          seller: "Sneha Patel",
+        },
+        {
+          name: "Smartphone",
+          desc: "Samsung Galaxy A52, 6GB RAM, 128GB Storage, minor scratches.",
+          price: 12000,
+          seller: "Amit Sharma",
+        },
+      ];
+
+      // Display available products initially
+      window.onload = function () {
+        displayListings();
+      };
+
+      // Function to add new listing
       function addListing() {
-        const name = document.getElementById("productName").value;
-        const desc = document.getElementById("productDesc").value;
-        const price = document.getElementById("productPrice").value;
-        const seller = document.getElementById("sellerName").value;
+        const name = document.getElementById("productName").value.trim();
+        const desc = document.getElementById("productDesc").value.trim();
+        const price = document.getElementById("productPrice").value.trim();
+        const seller = document.getElementById("sellerName").value.trim();
+
         if (name && desc && price && seller) {
           products.push({ name, desc, price, seller });
           displayListings();
@@ -119,19 +149,31 @@
           alert("Please fill all fields");
         }
       }
+
+      // Function to display product listings
       function displayListings() {
         const listingsDiv = document.getElementById("listings");
         listingsDiv.innerHTML = "";
+
+        if (products.length === 0) {
+          listingsDiv.innerHTML = "<p>No products available right now.</p>";
+          return;
+        }
+
         products.forEach((item, index) => {
           const div = document.createElement("div");
           div.className = "listing";
-          div.innerHTML = `<h3>${item.name} - ₹${item.price}</h3>
-                         <p>${item.desc}</p>
-                         <p>Seller: ${item.seller}</p>
-                         <button onclick="removeListing(${index})">Remove</button>`;
+          div.innerHTML = `
+            <h3>${item.name} - ₹${item.price}</h3>
+            <p>${item.desc}</p>
+            <p><strong>Seller:</strong> ${item.seller}</p>
+            <button onclick="removeListing(${index})">Remove</button>
+          `;
           listingsDiv.appendChild(div);
         });
       }
+
+      // Function to remove listing
       function removeListing(index) {
         products.splice(index, 1);
         displayListings();
@@ -139,3 +181,4 @@
     </script>
   </body>
 </html>
+
